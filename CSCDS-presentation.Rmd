@@ -9,7 +9,6 @@ output:
   slidy_presentation:
     incremental: false
     df_print: kable
-    keep_md: true
 footer: "Center for Cultural and Social Data Science Expo, 2020"
 css: mystyle.css
 autosize: true 
