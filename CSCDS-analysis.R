@@ -454,8 +454,44 @@ ggplot(df.venn2) +
 
 
 
+# 2018 survey - Q5 major 
 
+test= read.csv("data/multiple_choice_responses2018.csv")
 
+names(test)
 
+table(multiple_2018$Q5)
 
+major_factor = 
+  forcats::fct_collapse(multiple_2018$Q5, 
+                        "Business"= "A business discipline (accounting, economics, finance, etc.)", 
+                        "Comp. Science" = "Computer science (software engineering, etc.)",
+                        Eng = "Engineering (non-computer focused)", 
+                        "Environment/Geo" = "Environmental science or geology", 
+                        "Fine arts" = "Fine arts or performing arts", 
+                        "No major" = "I never declared a major",
+                        "IT" = "Information technology, networking, or system administration",
+                        "Math/Stats" = "Mathematics or statistics",
+                        "Life Science" = "Medical or life sciences (biology, chemistry, medicine, etc.)",
+                        "Other" = "Other",
+                        "Physics/astronomy" = "Physics or astronomy",
+                        "Humanities" = "Humanities (history, literature, philosophy, etc.)",
+                        "Social Science" = "Social sciences (anthropology, psychology, sociology, etc.)",
+                        Missing = c("Which best describes your undergraduate major? - Selected Choice"), 
+                        NULL = "")
 
+data.frame(fct_count(major_factor)) %>% 
+  droplevels() %>% 
+  mutate(prop = round(n/sum(n),2)) %>% 
+  ggplot(aes(x = reorder(f, -prop), y = prop, fill = f)) + geom_bar(stat = "identity") + 
+  theme_minimal() + 
+  scale_y_continuous(expand = c(0,0), limits = c(0, 1)) + 
+  ggtitle("Major in University") + 
+  labs(x = "Position", 
+       y = "Percentage") + 
+  theme(legend.position = "none") + 
+  geom_text(aes(x = f, 
+                y = prop + 0.05, label = round(prop, 2))) + coord_flip() + 
+  scale_fill_viridis(option = "D", discrete = TRUE)
+  
+  

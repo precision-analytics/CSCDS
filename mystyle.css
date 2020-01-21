@@ -23,11 +23,24 @@ img[alt=shame] {
   display: inline-block;
   float: right;
   margin:50px;
+  color:transparent;
 }
+
 
 #transition {
   color:transparent;
 } 
+
+#not {
+  font-weight:bold;
+  font-size:50px;
+  color:black;
+  position: fixed; 
+  top:30%; 
+  text-align:center;
+  left:10%;
+  padding:1em;
+}
 
 
 #job {
@@ -43,12 +56,16 @@ img[alt=shame] {
 }
 
 #questions {
-  color:transparent;
-} 
+  font-weight:bold;
+  font-size:50px;
+  color:black;
+  position:fixed;
+  top:40%;
+  text-align:center;
+  left:12%;
+  padding:1em;
+}
 
-#not {
-  color:transparent;
-} 
 
 .emphasized {
    font-size: 1.2em;

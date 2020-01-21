@@ -6,7 +6,7 @@ font-import: https://fonts.google.com/specimen/Montserrat
 font-family: "Monseratt"
 date: "`r Sys.Date()`"
 output: 
-  slidy_presentation:
+    slidy_presentation:
     incremental: false
     df_print: kable
 footer: "Center for Cultural and Social Data Science Expo, 2020"
@@ -16,6 +16,7 @@ autosize: true
 
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(dplyr)
 library(ggplot2) 
@@ -30,6 +31,7 @@ library(scales)
 library(ggthemes)
 library(viridis)
 library(viridisLite)
+
 
 # Read in data 
 schema = read.csv("data/survey_schema.csv")
@@ -97,6 +99,12 @@ df = multiple %>% select(Q1, Q2, Q3, Q4, Q5, Q8, starts_with("Q9"), starts_with(
 # Remove first row of variable full names 
 df = df[-1,]
 
+# For academic background 
+multiple_2018 = read.csv("data/multiple_choice_responses2018.csv") %>% 
+  select(Q5)
+
+
+
 ```
 
 
@@ -123,7 +131,7 @@ I'll do my best to address these objectives in the most data-driven approach I c
 > - Dispel some myths about the data science industry 
 > - Tips on how to transition
 > - Let's talk about your CV, the job search and the interview
-> - Bestow some glimmer of hope... 
+> - Bestow some glimmer of hope `r emo::ji("star")`
 
 
 
@@ -132,6 +140,10 @@ A bit about me
 
 I'm the CEO of a health data science startup in Montreal
 www.precision-analytics.ca
+
+```{r me, out.width= "20%", out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("figs/me.jpg")
+```
 
 **My background**
 
@@ -145,8 +157,7 @@ www.precision-analytics.ca
 - Began as a statistical consultancy, evolved to a blend of Software as a Service
 - Work in the biopharmaceutical sector to create tools that combine data storage, analysis and communication
 
-
-```{r pa_log, out.width = "40%", fig.align='center'}
+```{r pa_log, out.width = "30%", fig.align='center'}
 knitr::include_graphics("figs/PA-logo.png")
 ```
 
@@ -182,7 +193,6 @@ ggplot(data = venn_ds, aes(x0 = x, y0 = y, r = 2.5, fill = labels)) +
 A very scary (and real) job posting {.smaller}
 ===================================================
 
-**Skills**
 
 > - Coding knowledge and experience with several languages: C, C++, Java, JavaScript, etc.
 > - Knowledge and experience in statistical and data mining techniques: GLM/Regression, Random Forest, Boosting, Trees, text mining, social network analysis, etc.
@@ -195,23 +205,32 @@ simulation, scenario analysis, modeling, clustering, decision trees, neural netw
 > - Experience visualizing/presenting data for stakeholders using: Periscope, Business Objects, D3, ggplot, etc.
 
 
-Myths about data science 
+Myths about data science {#myths}
 ====================================================
 
+
+
 > - Myth 1. You need a PhD to become a data scientist 
+
+
 > - Myth 2. Python is the only tool used in data science
+
+
 > - Myth 3. Data science == AI & machine learning
-> - Myth 4. Data science challenges are analytical
+
+
+> - Myth 4. Data science is all about technical skills 
+
+
+
 
 Letting the data speak! {.smaller}
 ===================================================
-To tackle these myths, I analyzed Kaggle's 2019 annual survey of data scientists. Almost 20,000 respondents completed the survey from over 60 countries
+To tackle these myths, Kaggle conducts annual survey of data scientists. Almost 20,000 respondents completed the survey from over 60 countries in 2018 and 2019.
 ```{r respondent-plot, out.width= "65%"}
-
 
 cols <- viridis(3)
 cols <- substr(cols, 0, 7)
-
 
 highcharter::highchart(type = "map") %>%
   highcharter::hc_add_series_map(highcharter::worldgeojson,
@@ -230,7 +249,7 @@ highcharter::highchart(type = "map") %>%
 ```
 `r emo::ji("bangbang")` Kaggle is a platform that hosts machine learning competitions. It's users are not representative of the entire data science community `r emo::ji("bangbang")`
 
-Data available [here](https://www.kaggle.com/c/kaggle-survey-2019)
+Data available for [2018](https://www.kaggle.com/kaggle/kaggle-survey-2018) and   [2019](https://www.kaggle.com/c/kaggle-survey-2019)
 
 Demographics of respondents 
 =====================================================
@@ -284,6 +303,44 @@ data.frame(fct_count(position_factor)) %>%
 
 ```
 
+Academic background 
+===================================================
+
+
+```{r major}
+major_factor = 
+  forcats::fct_collapse(multiple_2018$Q5, 
+                        "Business"= "A business discipline (accounting, economics, finance, etc.)", 
+                        "Comp. Science" = "Computer science (software engineering, etc.)",
+                        Engineering = "Engineering (non-computer focused)", 
+                        "Environment/Geo" = "Environmental science or geology", 
+                        "Fine arts" = "Fine arts or performing arts", 
+                        "No major" = "I never declared a major",
+                        "IT" = "Information technology, networking, or system administration",
+                        "Math/Stats" = "Mathematics or statistics",
+                        "Life Science" = "Medical or life sciences (biology, chemistry, medicine, etc.)",
+                        "Other" = "Other",
+                        "Physics/astronomy" = "Physics or astronomy",
+                        "Humanities" = "Humanities (history, literature, philosophy, etc.)",
+                        "Social Science" = "Social sciences (anthropology, psychology, sociology, etc.)",
+                        Missing = c("Which best describes your undergraduate major? - Selected Choice"), 
+                        NULL = "")
+
+data.frame(fct_count(major_factor)) %>% 
+  droplevels() %>% 
+  mutate(prop = round(n/sum(n),2)) %>% 
+  ggplot(aes(x = reorder(f, -prop), y = prop, fill = f)) + geom_bar(stat = "identity") + 
+  theme_minimal() + 
+  scale_y_continuous(expand = c(0,0), limits = c(0, 1)) + 
+  ggtitle("Major in University") + 
+  labs(x = "Position", 
+       y = "Percentage") + 
+  theme(legend.position = "none") + 
+  geom_text(aes(x = f, 
+                y = prop + 0.05, label = round(prop, 2))) + coord_flip() + 
+  scale_fill_viridis(option = "D", discrete = TRUE)
+```
+
 
 Myth 1. You need a PhD to become a data scientist
 ====================================================
@@ -314,8 +371,8 @@ data.frame(fct_count(new_factor)) %>%
              label.size = NA) +
   geom_curve(data = data.frame(x = 3, y = .45, xend = 3, yend = .25), 
              mapping = aes(x = x, y = y, xend = xend, yend = yend), 
-             colour = "orange", 
-             size = 0.75, 
+             colour = "#2D708EFF", 
+             size = 1.5, 
              curvature = -0.1, 
              arrow = arrow(length = unit(0.01, "npc"), type = "closed"),
              inherit.aes = FALSE) +
@@ -366,8 +423,8 @@ data.frame(fct_count(coding_factor)) %>%
                 y = prop + 0.05, label = round(prop, 2))) +
   geom_curve(data = data.frame(x = 3, y = .60, xend = 2, yend = .35), 
              mapping = aes(x = x, y = y, xend = xend, yend = yend), 
-             colour = "orange", 
-             size = 0.75, 
+             colour = "#2D708EFF",
+             size = 1.5, 
              curvature = 0.1, 
              arrow = arrow(length = unit(0.01, "npc"), type = "closed"),
              inherit.aes = FALSE) + 
@@ -411,7 +468,7 @@ df %>% filter(code_yrs == "I have never written code") %>%
              hjust  = 0, 
              lineheight = .7, 
              inherit.aes = FALSE, 
-             label.size = .2) + 
+             label.size = 0) + 
   geom_text(aes(label = round(prop,2)), hjust = -0.5, position = position_dodge(0.9)) + 
   scale_y_continuous(expand = c(0,0), limits = c(0, 1)) + 
   ggtitle("Primary tool used at work or school", 
@@ -457,7 +514,7 @@ df %>% filter(!position %in% c("Student", "Not employed")) %>%
            using machine learning in their organizations") + 
   geom_curve(data = data.frame(x = 4, y = .75, xend = 6, yend = .30), 
              mapping = aes(x = x, y = y, xend = xend, yend = yend), 
-             colour = "orange", 
+             colour = "#2D708EFF",
              size = 1.5, 
              curvature = -0.1, 
              arrow = arrow(length = unit(0.01, "npc"), type = "closed"),
@@ -496,7 +553,7 @@ On transitioning {#transition}
 <div style="font-weight:bold;font-size:70px;color:black;position: fixed; top:40%; text-align:center;left:25%;padding:1em;">On transitioning</div>
 
 
-Transitioning {#job}
+I want a ds job {#job}
 ==================================================
 
 ```{r job-fig, out.width = "50%", fig.align='center'}
@@ -541,7 +598,7 @@ ggplot(df.venn2) +
            \nproblem solving and intellectual curiosity", size = 5) + 
   geom_curve(data = data.frame(x = 0, y = 3.5, xend = 0, yend = -0.5), 
              mapping = aes(x = x, y = y, xend = xend, yend = yend), 
-             colour = "orange", 
+             colour = "#2D708EFF", 
              size = 1.5, 
              curvature = 0, 
              arrow = arrow(length = unit(0.01, "npc"), type = "closed"),
@@ -710,7 +767,9 @@ A few tips (based on my personal pet peeves)
 Searching for a position
 =================================================
 
-![shame](figs/ds_shame.jpg)
+```{r shame, out.width= "40%", out.extra='style="float:right; padding:10px"'}
+knitr::include_graphics("figs/ds_shame.jpg")
+```
 
 > - Focus on the skills listed in the job positing, not the title *but be weary of descriptions* 
 > - Don't expect that you will possess 100% of the stated skills; it's often a wishlist
@@ -723,7 +782,7 @@ Searching for a position
 
 
 
-During the interview {.smaller}
+During the interview
 ==================================================
 
 - Expect technical questions and/or coding challenge
@@ -738,7 +797,7 @@ Jacqueline Nolis's book [Build a Career in Data Science](https://www.manning.com
 
 Asking for feedback after your interview can help highlight the interviewer's perceptions of your strenghs and weaknesses
 
-The fears employers have 
+Employer fears
 ==================================================
 
 In general, employers are concerned that new hires without job experience will struggle to see the bigger picture and will struggle with the pace. 
@@ -754,7 +813,7 @@ cbind("Undergrad & Masters" = c("No revelant experience",
   kable(format = "html") %>% 
   kable_styling(bootstrap_options = c("striped", "hover", position = "float_right", 
                                       font_size = 30)) %>% 
-  row_spec(0, color = "blue")
+  row_spec(0, color = "#453781FF")
 ```
 
 **Try to address these fears by addressing them directly in your cover letters, CV's and during the interview**
@@ -763,7 +822,7 @@ Conclusion
 ===================================================
 
 
-```{r ds_venn2, out.width= "%", out.extra='style="float:right; padding:10px"'}
+```{r ds_venn2, out.width= "40%", out.extra='style="float:right; padding:10px"'}
 
 venn_ds = data.frame(x = c(0, 2, -2),
                      y = c(2.5, -0.5, -0.5),
@@ -778,13 +837,23 @@ ggplot(data = venn_ds, aes(x0 = x, y0 = y, r = 2.5, fill = labels)) +
   scale_colour_manual(values = c('cornflowerblue', 'firebrick', 'gold'), guide = FALSE) +
   labs(fill = NULL) +
   theme(legend.position = "none") + 
+  scale_fill_viridis(option = "D", discrete = TRUE) +
   annotate("text", x = venn_ds$x, y = venn_ds$y, label = venn_ds$labels, size = 8)
 
 ```
 
 Pivoting to data science  from humanities, social sciences or any other discipling doesn't mean you need to leave all of your training behind. 
 
-- Look for people in your substantive area who are doing some more quantitative/tech driven
+`r emo::ji("check")` You have knowledge and/or experience in at least one of these circles 
+
+`r emo::ji("check")` Look for people in your substantive area who are doing some more quantitative/tech driven
+
+`r emo::ji("check")` Be confident that *you* know how to learn
+
+`r emo::ji("check")` Be ready to start at the bottom
+
+`r emo::ji("check")` Your path is the right path 
+
 
 
 
@@ -797,24 +866,24 @@ We're looking for summer interns and other potential academic collaborators!!
 
 A big thank you to [CSCDS](https://www.mcgill.ca/cscds/) for inviting to me speak today and [reddit.com/r/datascience](reddit.com/r/datascience) for all the memes
 
-I can be found on [twitter](https://twitter.com/ea_braithwaite).
+I can be found on [twitter](https://twitter.com/ea_braithwaite)
 
 Come check out our website [www.precision-analytics.ca](www.precision-analytics.ca)
 
-This presentation & R code can be found at [link]()
+This presentation & R code can be found on [Github](https://github.com/precision-analytics/CSCDS)
 
 ```{r r_logo, out.width = "20%", fig.align='center'}
 knitr::include_graphics("figs/R_logo.png")
 ```
 
-Questions {#questions}
+Happy to answer any questions {#questions}
 ============================================
 
-<div style="font-weight:bold;font-size:60px;color:black;position: fixed; top:40%; text-align:center;left:12%;padding:1em;">Happy to answer any questions</div>
 
-But not {#not}
+
+Unless it's about the R vs Python debate {#questions}
 ============================================
 
-<div style="font-weight:bold;font-size:50px;color:black;position: fixed; top:40%; text-align:center;left:10%;padding:1em;">Unless it's about the R vs Python debate</div>
+
 
 
