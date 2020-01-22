@@ -26,6 +26,16 @@ img[alt=shame] {
   color:transparent;
 }
 
+#story {
+  font-weight:bold;
+  font-size:40px;
+  color:black;
+  position:fixed;
+  top:40%;
+  text-align:center;
+  padding:1em;
+}
+
 
 #transition {
   color:transparent;
@@ -57,15 +67,25 @@ img[alt=shame] {
 
 #questions {
   font-weight:bold;
-  font-size:50px;
+  font-size:40px;
   color:black;
   position:fixed;
-  top:40%;
+  top:30%;
   text-align:center;
-  left:12%;
   padding:1em;
 }
 
+
+#debate {
+   font-weight:bold;
+  font-size:40px;
+  color:black;
+  position:fixed;
+  top:30%;
+  text-align:center;
+  left:5%;
+  padding:1em;
+}
 
 .emphasized {
    font-size: 1.2em;

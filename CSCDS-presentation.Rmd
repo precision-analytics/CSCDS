@@ -162,10 +162,15 @@ knitr::include_graphics("figs/PA-logo.png")
 ```
 
 
+Our story {#story}
+===================================================
+
+
+
 What is a data scientist
 ===================================================
 
-A combination of programming, statistics and domain knowledge. 
+A combination of programmoing, statistics and domain knowledge. 
 
 I like to think of it as *story telling using data*
 
@@ -541,9 +546,9 @@ Data scientists challenges {.smaller}
 
 In 2017, the Kaggle survey asked respondents about the "biggest challenges in data science".
 
-From here we can  see that most people identify "dirty data" the toughest part of the job. The rest of the issues seem be be organizational. 
+From here we can  see that most people identify "dirty data" the toughest part of the job. The rest of the issues seem be organizational. 
 
-```{r challenges, out.width="50%"}
+```{r challenges, out.width="60%"}
 knitr::include_graphics("figs/kaggle_2017.png")
 ```
 
@@ -611,7 +616,7 @@ ggplot(df.venn2) +
 Gaining  more  experience: Courses 
 =================================================
 
-The American Statistical Association held a two-day Data Science summit. 72 educators, researchers and practitioners in statistics, mathematics, computer science, and data dcience from academia, industry, government and nonprofit gathered to put forth recommendations for future data science programs. 
+The American Statistical Association held a two-day Data Science summit. 72 educators, researchers and practitioners in statistics, mathematics, computer science, and data science from academia, industry, government and nonprofit gathered to put forth recommendations for future data science programs. 
 
 Data science courses should expose students to: 
 
@@ -725,11 +730,18 @@ Build a portfolio
 - a simple personal website 
 - [Kaggle competitions](https://www.kaggle.com/)
 
+
+**Local meetups**
+
+[RLadies](https://www.meetup.com/rladies-montreal/), [Data For Good](https://www.meetup.com/DataforGood-Montreal), [PyData](https://www.meetup.com/PyData-MTL)
+
+
 **Internship**
 
 - Get  relevant experience, learn about new industry, create a network
 - Check out your university coop programs 
 - Internship programs in industry [IVADO labs](https://ivado.ca/en/events/ivado-digital-intelligence-internship-and-job-fair-h2020/?utm_source=MTL+NewTech&utm_campaign=d8a1232165-EMAIL_CAMPAIGN_2019_06_20_02_54_COPY_01&utm_medium=email&utm_term=0_c6228f9f7d-d8a1232165-444123085&mc_cid=d8a1232165&mc_eid=4ec14ee0c5), [Plotly](https://boards.greenhouse.io/plotly)
+
 
 
 *Don't forget to reach out to your network and tell people you're looking to get into a new industry*
@@ -866,13 +878,15 @@ We're looking for summer interns and other potential academic collaborators!!
 
 A big thank you to [CSCDS](https://www.mcgill.ca/cscds/) for inviting to me speak today and [reddit.com/r/datascience](reddit.com/r/datascience) for all the memes
 
-I can be found on [twitter](https://twitter.com/ea_braithwaite)
+I can be found on [twitter](https://twitter.com/ea_braithwaite) @ea_braithwaite
 
 Come check out our website [www.precision-analytics.ca](www.precision-analytics.ca)
 
-This presentation & R code can be found on [Github](https://github.com/precision-analytics/CSCDS)
+This presentation & R code can be found on [https://github.com/precision-analytics/CSCDS](https://github.com/precision-analytics/CSCDS).
 
-```{r r_logo, out.width = "20%", fig.align='center'}
+Simply download the entire repo via "clone/download" button; the presentation  is the html file
+
+```{r r_logo, out.width = "15%", fig.align='center'}
 knitr::include_graphics("figs/R_logo.png")
 ```
 
@@ -881,7 +895,7 @@ Happy to answer any questions {#questions}
 
 
 
-Unless it's about the R vs Python debate {#questions}
+Unless it's about the R vs Python debate {#debate}
 ============================================
 
 
