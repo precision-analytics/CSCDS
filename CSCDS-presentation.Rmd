@@ -595,8 +595,6 @@ ggplot(df.venn2) +
   coord_fixed() +
   theme_void() +
   scale_y_continuous(limits = c(-6, 6)) +
-  #scale_fill_manual(values = c('cornflowerblue', 'firebrick')) +
-  #scale_colour_manual(values = c('cornflowerblue', 'firebrick'), guide = FALSE) +
   labs(fill = NULL) +
   annotate("text", x = df$x, y = df$y, label = df$skill, size = 4.5) +
   annotate("text", x = 0, y = 4.5, label = "Critical thinking communication, domain knowledge, 
